@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <select class = 'bankname'>
+        {% for k in j %}
+        <option value="{{k}}">{{k}}</option>
+        {% endfor %}
+    </select>
+
+    <select class="state"><option>Please select State</option></select>
+    <select class="district"><option>Please select District</option></select>
+    <select class="branch"><option>Please select Branch Name</option></select>
+</form>
+
+
+<!--<form method="post" id="from1">{% csrf_token %}
+
+<br><select>{% for i in data %}<option value="{{ i.BankName  }}">{{ i.BankName }}</option>{% endfor %}</select>
+
+<br><select>{% for i in data %}<option value="{{ i.State  }}">{{ i.State }}</option>{% endfor %}</select>
+
+<br><select>{% for i in data %}<option value="{{ i.District  }}">{{ i.District }}</option>{% endfor %}</select>
+
+<br><select>{% for i in data %}<option value="{{ i.City  }}">{{ i.City }}</option>{% endfor %}</select>
+
+<br><select>{% for i in data %}<option value="{{ i.Branch  }}">{{ i.Branch }}</option>{% endfor %}</select>
+
+</form>-->
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    $("select.bankname").change(function(){
+
+        var bn = $(this).children("option:selected").val();
+
+        $("#div1").html("json/"+bn.split(' ').join('7'));
+        $.ajax({url: "json/"+bn.split(' ').join('7'), success: function(result){
+        $("select.state").html(result);
+        }});
+
+    });
+
+    $("select.state").change(function(){
+
+        var bn = ($('select.bankname').children("option:selected").val()).split(' ').join('7');
+        var st = ($(this).children('option:selected').val()).split(' ').join('7');
+
+        $("#div2").html("json/"+bn+"/"+st);
+        $.ajax({url: "json/"+bn+"/"+st, success: function(result1){
+        $("select.district").html(result1);
+        }});
+
+    });
+
+        $("select.district").change(function(){
+
+        var bn = $('select.bankname').children("option:selected").val();
+        var st = $('select.state').children('option:selected').val();
+        var dt = $(this).children('option:selected').val();
+
+        $("#div3").html("json/"+bn.split(' ').join('7')+"/"+st.split(' ').join('7')+"/"+dt.split(' ').join('7'));
+        $.ajax({url: "json/"+bn.split(' ').join('7')+"/"+st.split(' ').join('7')+"/"+dt.split(' ').join('7'), success: function(result2){
+        $("select.branch").html(result2);
+        }});
+
+    });
+
+        $("select.branch").change(function(){
+
+        var bn = $('select.bankname').children("option:selected").val();
+        var st = $('select.state').children('option:selected').val();
+        var dt = $('select.district').children('option:selected').val();
+        var br = $(this).children('option:selected').val()
+        $("#div4").html("json/"+bn.split(' ').join('7')+"/"+st.split(' ').join('7')+"/"+dt.split(' ').join('7')+"/"+br.split(' ').join('7'));
+        $.ajax({url: "json/"+bn.split(' ').join('7')+"/"+st.split(' ').join('7')+"/"+dt.split(' ').join('7')+"/"+br.split(' ').join('7'), success: function(result3){
+        $("#div5").html(result3);
+        }});
+
+    });
+
+
+
+});
+</script>
+
+<a id = "div5">no</a>
+
+</body>
+</html>
